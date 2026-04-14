@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <tuple>
 
 using namespace std;
 
@@ -26,11 +27,15 @@ int main() {
     // Friendship, Species, Catchphrase
     map<string, tuple<int, string, string>> villagerData;
 
+    // Gonna assume the driver stuff can go away because we're fiating the rest of the
+    // assignment now
+
     // MENU STUFF
 
     int choice = -1;
     while (choice != EXIT) {
         printMenu();
+        cout << "Enter choice: ";
         cin >> choice;
 
         if (choice == ADD) {
@@ -80,7 +85,7 @@ void printVillagers(const map<string, tuple<int, string, string>>& data) {
 
 // Originally I thought it would increase everyone's but now I think its just of a specific villagers
 // So I am changing this, but the instructions are a bit ambiguous
-// increaseFriendship() increases friendship level of all villagers by 1
+// increaseFriendship() increases friendship level of a villagers by 1
 // parameters: map<string, tuple<int, string, string>>& data - the map containing villager data
 // returns: void
 void increaseFriendship(map<string, tuple<int, string, string>>& data) {
@@ -101,11 +106,25 @@ void increaseFriendship(map<string, tuple<int, string, string>>& data) {
     }
 }
 
-// decreaseFriendship() decreases friendship level of all villagers by 1
+// decreaseFriendship() decreases friendship level of a villagers by 1
 // parameters: map<string, tuple<int, string, string>>& data - the map containing villager data
 // returns: void
 void decreaseFriendship(map<string, tuple<int, string, string>>& data) {
-    
+    string name;
+    cout << "Villager to decrease: ";
+    cin >> name;
+
+    auto search = data.find(name);
+    if (search != data.end()) {
+        if (get<0>(search->second) > 0) { // don't allow below 0
+            get<0>(search->second)--;
+            cout << name << "'s friendship decreased" << endl;
+        } else {
+            cout << name << "'s friendship already 0 :(" << endl;
+        }
+    } else {
+        cout << name << " not found." << endl;
+    }
 }
 
 // searchVillager() searches for a villager prints details

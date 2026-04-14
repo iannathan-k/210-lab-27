@@ -15,6 +15,7 @@ void printMenu();
 void printVillagers(const map<string, tuple<int, string, string>>&);
 void increaseFriendship(map<string, tuple<int, string, string>>&);
 void decreaseFriendship(map<string, tuple<int, string, string>>&);
+void searchVillager(const map<string, tuple<int, string, string>>&);
 
 int main() {
     // declarations
@@ -26,9 +27,9 @@ int main() {
     // // villagerData["Audie"] = {"Orange", "Yellow", "Red"};
     // // villagerData["Raymond"] = {"Black", "Gray", "White"};
     // // villagerData.insert({"Marshal", {"Blue", "White", "Black"}});
-    // villagerData["Audie"] = make_tuple(7, "Cat", "Meow!");
-    // villagerData["Raymond"] = make_tuple(3, "Human", "Get of my lawn!");
-    // villagerData.insert({"Marshal", make_tuple(10, "Dalmation", "Woof!")});
+    villagerData["Audie"] = make_tuple(7, "Cat", "Meow!");
+    villagerData["Raymond"] = make_tuple(3, "Human", "Get of my lawn!");
+    villagerData.insert({"Marshal", make_tuple(10, "Dalmation", "Woof!")});
 
     // // access the map using a range-based for loop
     // cout << "Villagers and their data (range-based for loop):" << endl;
@@ -74,8 +75,12 @@ int main() {
         cin >> choice;
 
         if (choice == INCREASE) {
-
-        } else {
+            increaseFriendship(villagerData);
+        } else if (choice == DECREASE) {
+            decreaseFriendship(villagerData);
+        } else if (choice == SEARCH) {
+            searchVillager(villagerData);
+        } else if (choice != EXIT){
             cout << "Invalid choice, try again: " << endl;
         }
 
@@ -127,5 +132,24 @@ void decreaseFriendship(map<string, tuple<int, string, string>>& data) {
         if (get<0>(pair.second) > 0) { // don't allow below 0
             get<0>(pair.second)--;
         }
+    }
+}
+
+// searchVillager() searches for a villager prints details
+// parameters: const map<string, tuple<int, string, string>>& data - the map containing villager data
+// returns: void
+void searchVillager(const map<string, tuple<int, string, string>>& data) {
+    string name;
+    cout << "Enter villager's name: ";
+    cin >> name;
+
+    auto search = data.find(name);
+    if (search != data.end()) {
+        cout << "Found " << name << "'s data: ";
+        cout << "[" << get<0>(search->second) << ", ";
+        cout << get<1>(search->second) << ", " ;
+        cout << get<2>(search->second) << "]" << endl;
+    } else {
+        cout << name << " not found." << endl;
     }
 }
